@@ -1,0 +1,21 @@
+body {
+  margin: 0;
+  padding: 0;
+  background-color: rgb(126, 15, 177);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
+  grid-template-rows: 20vh 20vh 20vh 20vh 20vh;
+}
+
+.grid-item {
+  background-color: rgb(6, 6, 90);
+  color: white;
+  text-align: center;
+}
+
+.grid-item:hover {
+  opacity: 0.7;
+}
