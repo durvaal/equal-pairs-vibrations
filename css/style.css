@@ -7,7 +7,7 @@ body {
 .grid-container {
   display: grid;
   grid-template-columns: auto auto auto auto auto;
-  grid-template-rows: 20vh 20vh 20vh 20vh 20vh;
+  grid-template-rows: 25vh 25vh 25vh 25vh;
 }
 
 .grid-item {
