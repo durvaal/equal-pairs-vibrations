@@ -17,6 +17,24 @@ function shuffle(array) {
   return array;
 };
 
+function checkAllVibrationPairsHasFormed() {
+  const gridItems = document.getElementsByClassName("grid-item");
+  let hasFormed = true;
+
+  for (let i = 0; i < gridItems.length; i++) {
+    if (!gridItems[i].classList.contains("found-pair")) {
+      hasFormed = false;
+      break;
+    }
+  }
+
+  if (hasFormed) {
+    document.getElementById("grid-container").classList.add("congratulations");
+  } else {
+    document.getElementById("grid-container").classList.remove("congratulations");
+  }
+};
+
 function checkVibrationPairIsEqual(firstItemIndex, seconditemIndex) {
   const firstVibrationsList = equalVibrationsPairsShuffled[firstItemIndex];
   const secondVibrationsList = equalVibrationsPairsShuffled[seconditemIndex];
@@ -33,9 +51,9 @@ function checkVibrationPairIsEqual(firstItemIndex, seconditemIndex) {
 function selectGridItem(gridItemIndex) {
   const hasNotItem = selectedVibrationPair.length === 0;
   const hasOneItem = selectedVibrationPair.length === 1;
-  const itemHasFounded = document.getElementsByClassName("grid-item")[gridItemIndex].classList.contains("found-pair");
+  const pairWasFormed = document.getElementsByClassName("grid-item")[gridItemIndex].classList.contains("found-pair");
 
-  if (!itemHasFounded && !checkingVibrationPair) {
+  if (!pairWasFormed && !checkingVibrationPair) {
     window.navigator.vibrate(equalVibrationsPairsShuffled[gridItemIndex]);
 
     if (hasNotItem) {
@@ -61,6 +79,7 @@ function selectGridItem(gridItemIndex) {
           document.getElementsByClassName("grid-item")[seconditemIndex].classList.add("found-pair");
           document.getElementsByClassName("grid-item")[firstItemIndex].innerHTML = "<i class='fa fa-check'></i>";
           document.getElementsByClassName("grid-item")[seconditemIndex].innerHTML = "<i class='fa fa-check'></i>";
+          checkAllVibrationPairsHasFormed();
         } else {
           document.getElementsByClassName("grid-item")[firstItemIndex].innerHTML = "";
           document.getElementsByClassName("grid-item")[seconditemIndex].innerHTML = "";
