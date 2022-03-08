@@ -16,16 +16,28 @@ body {
   text-align: center;
   display: grid;
   align-items: center;
+  position: relative;
+  -webkit-box-shadow: 0 7px 21px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+  -moz-box-shadow:  0 7px 21px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+  box-shadow: 0 7px 21px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+  -ms-transition: 0 7px 21px rgba(0, 0, 0, 0.25), 0 5px 5px rgba(0, 0, 0, 0.22);
+  -o-transition: all 1000ms ease;
+  -webkit-transition: all 1000ms ease;
+  -moz-transition: all 1000ms ease;
+  -ms-transition: all 1000ms ease;
+  -o-transition: all 1000ms ease;
+  transition: all 1000ms ease;
 }
 
 .grid-item:hover {
-  opacity: 0.7;
   cursor: pointer;
 }
 
 .grid-item i {
-  font-size: 3rem;
+  font-size: 1.5rem;
   color: white;
+  position: absolute;
+  width: 100%;
 }
 
 .grid-item.selected-to-check {
