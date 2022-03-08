@@ -1,5 +1,6 @@
-
-const vibrationTimes = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500, 550, 600, 650, 700, 750, 800, 850, 900, 950, 1000];
+let equalVibrationsPairsShuffled = [];
+let selectedVibrationPair = [];
+let checkingVibrationPair = false;
 
 // Fisher-Yates shuffle algorithm
 function shuffle(array) {
@@ -8,7 +9,6 @@ function shuffle(array) {
 
     // swap elements array[i] and array[j]
     // we use "destructuring assignment" syntax to achieve that
-    // you'll find more details about that syntax in later chapters
     // same can be written as:
     // let t = array[i]; array[i] = array[j]; array[j] = t
     [array[i], array[j]] = [array[j], array[i]];
@@ -17,18 +17,78 @@ function shuffle(array) {
   return array;
 };
 
+function checkVibrationPairIsEqual(firstItemIndex, seconditemIndex) {
+  const firstVibrationsList = equalVibrationsPairsShuffled[firstItemIndex];
+  const secondVibrationsList = equalVibrationsPairsShuffled[seconditemIndex];
+
+  if (firstVibrationsList.length !== secondVibrationsList.length) return false;
+
+  for (var i = 0; i < firstVibrationsList.length; ++i) {
+    if (firstVibrationsList[i] !== secondVibrationsList[i]) return false;
+  }
+
+  return true;
+};
+
+function selectGridItem(gridItemIndex) {
+  const hasNotItem = selectedVibrationPair.length === 0;
+  const hasOneItem = selectedVibrationPair.length === 1;
+  const itemHasFounded = document.getElementsByClassName("grid-item")[gridItemIndex].classList.contains("found-pair");
+
+  if (!itemHasFounded && !checkingVibrationPair) {
+    window.navigator.vibrate(equalVibrationsPairsShuffled[gridItemIndex]);
+
+    if (hasNotItem) {
+      checkingVibrationPair = true;
+      selectedVibrationPair.push(gridItemIndex);
+      document.getElementsByClassName("grid-item")[gridItemIndex].classList.add("selected-to-check");
+      document.getElementsByClassName("grid-item")[gridItemIndex].innerHTML = "<i class='fa fa-question'></i>";
+      checkingVibrationPair = false;
+    } else if (hasOneItem && !selectedVibrationPair.includes(gridItemIndex)) {
+      checkingVibrationPair = true;
+      selectedVibrationPair.push(gridItemIndex);
+      document.getElementsByClassName("grid-item")[gridItemIndex].classList.add("selected-to-check");
+      document.getElementsByClassName("grid-item")[gridItemIndex].innerHTML = "<i class='fa fa-question'></i>";
+
+      const firstItemIndex = selectedVibrationPair[0];
+      const seconditemIndex = selectedVibrationPair[1];
+
+      setTimeout(() => {
+        const pairVibrationIsEqual = checkVibrationPairIsEqual(firstItemIndex, seconditemIndex);
+
+        if (pairVibrationIsEqual) {
+          document.getElementsByClassName("grid-item")[firstItemIndex].classList.add("found-pair");
+          document.getElementsByClassName("grid-item")[seconditemIndex].classList.add("found-pair");
+          document.getElementsByClassName("grid-item")[firstItemIndex].innerHTML = "<i class='fa fa-check'></i>";
+          document.getElementsByClassName("grid-item")[seconditemIndex].innerHTML = "<i class='fa fa-check'></i>";
+        } else {
+          document.getElementsByClassName("grid-item")[firstItemIndex].innerHTML = "";
+          document.getElementsByClassName("grid-item")[seconditemIndex].innerHTML = "";
+        }
+
+        document.getElementsByClassName("grid-item")[firstItemIndex].classList.remove("selected-to-check");
+        document.getElementsByClassName("grid-item")[seconditemIndex].classList.remove("selected-to-check");
+
+        selectedVibrationPair = [];
+        checkingVibrationPair = false;
+      }, 2000);
+    }
+  }
+};
+
 function generateRandonEventListenersToGridItems(equalVibrationsPairs) {
-  const equalVibrationsPairsShuffled = shuffle([...equalVibrationsPairs, ...equalVibrationsPairs]);
+  equalVibrationsPairsShuffled = shuffle([...equalVibrationsPairs, ...equalVibrationsPairs]);
   const gridItems = document.getElementsByClassName("grid-item");
 
   for (let i = 0; i < gridItems.length; i++) {
     gridItems[i].addEventListener("click", function () {
-      window.navigator.vibrate(equalVibrationsPairsShuffled[i]);
+      selectGridItem(i);
     });
   }
 };
 
 function generateEqualVibrationsPairs() {
+  const vibrationTimes = [50, 100, 150, 200, 250, 300, 350, 400, 450, 500];
   const equalVibrationsPairs = [];
 
   // There are twenty items on the screen, so 10 vibration time arrays are generated to form the pairs
