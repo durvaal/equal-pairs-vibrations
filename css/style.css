@@ -14,8 +14,29 @@ body {
   background-color: rgb(6, 6, 90);
   color: white;
   text-align: center;
+  display: grid;
+  align-items: center;
 }
 
 .grid-item:hover {
   opacity: 0.7;
+  cursor: pointer;
+}
+
+.grid-item i {
+  font-size: 3rem;
+  color: white;
+}
+
+.grid-item.selected-to-check {
+  background-color: black !important;
+}
+
+.grid-item.found-pair {
+  background-color: #009806!important;
+  cursor: inherit;
+}
+
+.grid-item.selected-to-check:hover {
+  cursor: inherit;
 }
